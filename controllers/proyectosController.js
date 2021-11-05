@@ -1,5 +1,5 @@
 exports.proyectosHome = (req, res) => {
-    res.send('index')
+    res.render('index')
 }
 
 exports.proyectosAbout = (req, res) => {
