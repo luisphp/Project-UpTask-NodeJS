@@ -3,5 +3,5 @@ exports.proyectosHome = (req, res) => {
 }
 
 exports.proyectosAbout = (req, res) => {
-    res.send('About')
+    res.render('about')
 }

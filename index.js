@@ -7,6 +7,9 @@ const path = require('path')
 //Crear un app/servidor de express
 const app = express()
 
+//Cargar archivos estaticos / como estilos CSS y javscript en este caso estan en public
+app.use(express.static('public'))
+
 //Habilitar pug
 app.set('view engine', 'pug')
 
