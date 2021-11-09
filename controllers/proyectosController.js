@@ -1,3 +1,5 @@
+const Proyectos = require('../models/Proyectos')
+
 exports.proyectosHome = (req, res) => {
     res.render('index', {
         nombrePagina: 'Proyectos'
@@ -15,7 +17,7 @@ exports.proyectosNew = (req, res) => {
 }
 
 // Save a new project using "POST"
-exports.CreateNewProject = (req, res) => {
+exports.CreateNewProject = async (req, res) => {
     // console.log(req.body)
     
     //validar que tengamos algo en el input
@@ -25,6 +27,23 @@ exports.CreateNewProject = (req, res) => {
 
     name ? '' : errores.push({'message': 'Please add a name to your Project'})
 
-    errores.length > 0 ? res.render('newProject', { nombrePagina: 'New Project' ,errores}) : ''
+    if(errores.length > 0) {
+        res.render('newProject', { nombrePagina: 'New Project' ,errores})
+    } else {
+        // Forma sincrona
+        // Proyectos.create({name})
+        // .then(() => {
+        //     console.log(' Se inserto el proyecto correctamente')
+        // })
+        // .catch(error => {
+        //     console.log('No se pudo insertar el registro: ', error)
+        // })
+        // res.render('newProject', {nombrePagina: 'New Project', })
+
+        //****
+        // Form asincrona
+        const proyecto = await Proyectos.create({name})
+        res.redirect('/')
+    }
 
 }

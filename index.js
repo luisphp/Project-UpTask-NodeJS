@@ -5,6 +5,17 @@ const routes = require('./routes')
 const path = require('path')
 const bodyParser = require('body-parser')
 
+// Crear la conexion a la base de datos
+const db  = require('./config/db')
+
+//Importar el modelo
+require('./models/Proyectos')
+
+// db.authenticate()
+db.sync()
+    .then(() => console.log('Conectado al servidor de base de datos: '))
+    .catch(error => console.log('No se puedo conectar al servidor de base de datos: ', error))
+
 //Crear un app/servidor de express
 const app = express()
 
