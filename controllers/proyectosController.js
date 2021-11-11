@@ -1,8 +1,14 @@
 const Proyectos = require('../models/Proyectos')
+const slug = require('slug')
 
-exports.proyectosHome = (req, res) => {
+exports.proyectosHome = async (req, res) => {
+    //hacemos la consulta a la base de datos
+    const allProjects = await Proyectos.findAll();
+
+    // console.log('Todos los proyectos: ',allProjects)
     res.render('index', {
-        nombrePagina: 'Proyectos'
+        nombrePagina: 'Proyectos',
+        allProjects // se pasan los projects a la vista
     })
 }
 
@@ -42,6 +48,9 @@ exports.CreateNewProject = async (req, res) => {
 
         //****
         // Form asincrona
+        // const url =  slug(name).toLowerCase()
+
+        //Antes de guardar en la base de datos usamos el hook de sequelize para 
         const proyecto = await Proyectos.create({name})
         res.redirect('/')
     }

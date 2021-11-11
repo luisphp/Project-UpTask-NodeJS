@@ -17,14 +17,14 @@ html(lang="en")
             aside.contenedor-proyectos
                 .panel.crear-proyecto
                     a(href="/new-project" class="boton") New project
-                        span +
+                        span +                        
                 .panel.lista-proyectos
                     ul#proyectos.proyectos
-                        li
-                            a(href="#") Diseño de tienda virtual
-                        li
-                            a(href="#") Nuevo blog
-                        li
-                            a(href="#") Crear base de datos
-            
+                        //- Listamos todos los proyectos de la base de datos -//
+                        if(allProjects && allProjects.length > 0)
+                            each project in allProjects
+                                li 
+                                    a(href=`/${project.url}`) #{project.name}
+            pre= varDump(allProjects)
             block contenido 
+            
