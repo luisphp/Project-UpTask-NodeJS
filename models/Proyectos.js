@@ -27,6 +27,11 @@ const Proyectos = db.define('proyectos', {
             console.log('Se ejecuta el hook beforeCreate para el slug')
             // console.log('Antes de insertar en la base de datos ', proyecto.name)
             // console.log('Antes de insertar en la base de datos ', proyecto.url)
+        },
+        beforeUpdate(proyecto){
+            const url = slug(proyecto.name).toLowerCase();
+            proyecto.url = `${url}-${shortid.generate()}`
+            console.log('Se ejecuta el hook beforeUpdate para el slug')
         }
     }
 })

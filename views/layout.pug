@@ -11,8 +11,9 @@ html(lang="en")
     body
         header.barra
             h1 UpTask - Project Manager
+            //- #{year}
             //- h1 ProductManager - Administrador de productos
-            a(href="#") Cerrar sesion
+            a(href="/") Cerrar sesion
         main.contenedor
             aside.contenedor-proyectos
                 .panel.crear-proyecto
@@ -24,7 +25,6 @@ html(lang="en")
                         if(allProjects && allProjects.length > 0)
                             each project in allProjects
                                 li 
-                                    a(href=`/${project.url}`) #{project.name}
-            pre= varDump(allProjects)
+                                    a(href=`/proyectos/${project.url}`) #{project.name}
+            //- pre= varDump(allProjects)
             block contenido 
-            
