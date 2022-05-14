@@ -3,6 +3,8 @@ const slug = require('slug');
 const { response } = require('express');
 const axios = require('axios');
 const FormData = require('form-data');
+const https = require('https');
+const { Console } = require('console');
 
 
 exports.proyectosHome = async (req, res) => {
@@ -232,7 +234,7 @@ exports.proyectoPorUrl = async(req,res) => {
         
         const formData = new URLSearchParams();
         formData.append('username', 'oneillvilla@brave-otter-7n2baa.com')
-        formData.append('password', '##123Labs***SPbcGzwiXNqTXKjH8vqIi0fG')
+        formData.append('password', '##123Labs****wZbkP6FaONeObiDH0uqvu0S2r')
         formData.append('grant_type', 'password')
         formData.append('client_secret', 'B7CF14D7C45753E9AFCD2332E54F0696C7F7574E7463FEA7B1D9D77E122F4214')
         formData.append('client_id', '3MVG9cHH2bfKACZa.edll4621R8GebXFY1BxtlvAWjJSDql3iy2UmvycgxH8wwGjcAjXz2IQVzy2cFErnet32',)
@@ -256,7 +258,7 @@ exports.proyectoPorUrl = async(req,res) => {
         return responseServer
     }
 
-    //Hacer request a Salesforce Auth
+    // Get Products From Salesforce
     exports.getAllSalesforceProducts = async (req, res, next) => {
 
         //***Extraemos el access_token del request
@@ -274,7 +276,7 @@ exports.proyectoPorUrl = async(req,res) => {
         headers: {'Authorization': 'Bearer '+access_token}
         }).then(function (response) {
 
-            axios.req
+            // axios.req
             var AllProducts = response.data
             res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -293,8 +295,114 @@ exports.proyectoPorUrl = async(req,res) => {
             res.status(200).json({message: 'No se pudo enviar el request [getAllProducts]', error })
         });
 
-        // axios.interceptors.request.use(request => {
-        //     console.log('Starting Request', JSON.stringify(request, null, 2))
-        //     return request
-        //   })
     }
+
+    // Post New Salesforce Order
+    // URL : localhost:5000/api/postNewSalesforceOrder
+    exports.postNewSalesforceOrder = async (req, res, next) => {
+
+        var incomeBody =  req.body;
+        console.log('REQUEST RECEIVED');
+        JSON.stringify(req.body) == '{}' ? incomeBody = {"default_node" : "default_body_test"} : ''
+
+        var orderDetails = {
+            "accountId" : "0015e000003QRV6AAO",
+            "orderItems" : [
+            {
+                "Id" : "01t5e000003kKf7AAE",
+                "amount" : "300",
+                "quantity" : "2"
+            },
+            {
+                "Id" : "01t5e000003kKg0AAE",
+                "amount" : "1250",
+                "quantity" : "2"
+            }],
+            "shippingDetails" : "Addres 1 Test VueJS",
+            "billingDetails" : "Billing Details 1 Test VueJS",
+            "paymentMethod" : "CreditCard"
+        }
+
+        orderDetails.yourOrderDetails = req.body.orderDetails
+        
+        var access_token =  await makeSalesforceAuth()
+
+        const responseServer = await axios.request({
+        url: 'https://brave-otter-7n2baa-dev-ed.my.salesforce.com/services/apexrest/api/orders',
+        method: 'POST',
+        headers: {'Content-Type': 'application/json',
+                  'Authorization': 'Bearer '+access_token},
+        data : orderDetails
+            }).then(function (response) {
+            var orderInfo = response.data
+            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080/');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+            res.setHeader('Access-Control-Allow-Credentials', true);
+            res.setHeader('Content-Type' , 'application/json')
+        
+            // res.status(200).json({message: 'Your Order Has been received!!', orderInfo, salesforceResponse: response.data })
+            res.status(200).json({Hello: 'Friend'})
+            next();
+            })
+            .catch(function (error) {
+                res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080/');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+                res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+                res.setHeader('Access-Control-Allow-Credentials', true);
+                res.setHeader('Content-Type' , 'application/json')
+                console.log('Error postNewSalesforceOrder: [failed]', error)
+                res.status(200).json({message: 'No se pudo enviar el request [postNewSalesforceOrder]', error })
+            });
+    }
+    
+    //var parseString = require('xml2js').parseString;
+    
+
+    exports.b2cprueba  = async (req, res, next) => {
+
+        var body = req.body
+        var UserName =  req.body['soapenv:envelope']['soapenv:body']['urn:authenticate']['urn:username']
+        var Password =  req.body['soapenv:envelope']['soapenv:body']['urn:authenticate']['urn:password']
+        var base64credentials = Buffer.from( UserName+':'+Password ).toString('base64')
+
+        console.log( '>>>>>> UserName ', UserName , ' Password: ', Password )
+        console.log('Base64 >>>> ', base64credentials)
+        
+        
+        const responseServer = await axios.request({
+
+            url: 'https://zycp-001.sandbox.us01.dx.commercecloud.salesforce.com/s/RefArch/dw/shop/v22_4/customers/auth?client_id=aa292ff4-311b-4304-93d7-329f2c17916a',
+            method: 'POST',
+            headers: {  'Authorization': 'Basic '+base64credentials,
+                        'Content-Type' : 'application/json',
+                        'Connection' : 'keep-alive',
+                        'Accept' : 'application/json'},
+            data: {
+                type: 'credentials'
+            }
+            }).then(function (response) {
+    
+                var responseData = response.data
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+                res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+                res.setHeader('Access-Control-Allow-Credentials', true);
+                    var xmlResponse = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns2:AuthenticateResult xmlns:ns2="urn:authentication.soap.sforce.com"><ns2:Authenticated>true</ns2:Authenticated></ns2:AuthenticateResult></SOAP-ENV:Body></SOAP-ENV:Envelope>`
+                    res.header('Content-Type', 'application/xml');
+                    res.status(200).send(xmlResponse);
+                next()
+            })
+            .catch(function (error) {
+
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+                res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+                res.setHeader('Access-Control-Allow-Credentials', true);
+
+                var xmlResponse = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header/><SOAP-ENV:Body><ns2:AuthenticateResult xmlns:ns2="urn:authentication.soap.sforce.com"><ns2:Authenticated>false</ns2:Authenticated></ns2:AuthenticateResult></SOAP-ENV:Body></SOAP-ENV:Envelope>`
+                res.header('Content-Type', 'application/xml');
+                res.status(200).send(xmlResponse);
+
+            });
+    
+    }
+

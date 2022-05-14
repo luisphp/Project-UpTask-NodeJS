@@ -62,6 +62,17 @@ app.use((req,res,next) => {
 
 //habilitar body parser para tener acceso a lo que se mande como "POST" ya sea form/Http request
 app.use(bodyParser.json());
+require('body-parser-xml')(bodyParser);
+app.use(
+  bodyParser.xml({
+    limit: '1MB', // Reject payload bigger than 1 MB
+    xmlParseOptions: {
+      normalize: true, // Trim whitespace inside text nodes
+      normalizeTags: true, // Transform tags to lowercase
+      explicitArray: false, // Only put nodes in array if >1
+    },
+  }),
+);
 app.use(bodyParser.urlencoded({extended: true}))
 app.use( '/' , routes() )
 

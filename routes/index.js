@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router();
 
 //Importar express-validator
-const {body} = require('express-validator/check')
+const {body} = require('express-validator')
 
 //Importar controldor
 const proyectosController = require('../controllers/proyectosController')
@@ -31,15 +31,19 @@ module.exports = function () {
     //Listar proyecto (PUG)
     router.get('/proyectos/:url', proyectosController.proyectoPorUrl)
 
-    // *** Salesforce ****
+        // **************** Salesforce **************** //
 
-    // get Salesforce Credencial 
-    router.get('/api/salesforceConnection', proyectosController.makeSalesforceConnect)
+        // get Salesforce Credencial - Salesforce
+        router.get('/api/salesforceConnection', proyectosController.makeSalesforceConnect)
 
-    // get Salesforce Products
-    router.post('/api/getAllSalesforceProducts', proyectosController.getAllSalesforceProducts)
+        // get Salesforce Products - Salesforce
+        router.post('/api/getAllSalesforceProducts', proyectosController.getAllSalesforceProducts)
+
+        // post createOrder - Salesforce
+        router.post('/api/postNewSalesforceOrder', proyectosController.postNewSalesforceOrder)
     
-    
+        // Ruta B2C de pruebas
+        router.post('/api/b2c/pruebasinglesignnone', proyectosController.b2cprueba)
     
     
     //Apartado de las APIS ---GenXD
