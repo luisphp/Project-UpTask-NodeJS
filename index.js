@@ -76,7 +76,9 @@ app.use(
 app.use(bodyParser.urlencoded({extended: true}))
 app.use( '/' , routes() )
 
-app.listen(5000, (error) => {
+var port = process.env.PORT || 5000
+
+app.listen(port, (error) => {
     if(error) {
         console.log('Error starting server: ',error)
     }else{
