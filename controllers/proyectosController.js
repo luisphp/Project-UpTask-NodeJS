@@ -22,15 +22,20 @@ exports.proyectosAbout = (req, res) => {
     res.render('about')
 }
 
-exports.proyectosNew = (req, res) => {
+exports.proyectosNew = async (req, res) => {
+
+    const allProjects = await Proyectos.findAll();
+
     res.render('newProject', {
-        nombrePagina: 'New Project'
+        nombrePagina: 'New Project',
+        allProjects
     })
 }
 
 // Save a new project using "POST"
 exports.CreateNewProject = async (req, res) => {
     // console.log(req.body)
+    const allProjects = await Proyectos.findAll();
     
     //validar que tengamos algo en el input
     const {name} = req.body
@@ -40,7 +45,7 @@ exports.CreateNewProject = async (req, res) => {
     name ? '' : errores.push({'message': 'Please add a name to your Project'})
 
     if(errores.length > 0) {
-        res.render('newProject', { nombrePagina: 'New Project' ,errores})
+        res.render('newProject', { nombrePagina: 'New Project' ,errores, allProjects})
     } else {
         // Forma sincrona
         // Proyectos.create({name})
@@ -62,23 +67,45 @@ exports.CreateNewProject = async (req, res) => {
     }
 }
 
-exports.proyectoPorUrl = async(req,res) => {
+// exports.proyectoPorUrl = async(req,res) => {
 
-    let allProjects = await Proyectos.findAll()
+//     let allProjects = await Proyectos.findAll()
 
-    let proyectoOne = await Proyectos.findOne({
-            where : {
-                url : req.params ? req.params.url : 'Nada'
-            }
-        })
+//     let proyectoOne = await Proyectos.findOne({
+//             where : {
+//                 url : req.params ? req.params.url : 'Nada'
+//             }
+//         })
 
-        !proyectoOne ? proyectoOne = {message: 'Item not found'} : ''
+//         !proyectoOne ? proyectoOne = {message: 'Item not found'} : ''
 
-        res.render('ProjectTasks',{
-            proyectoOne,
-            nombrePagina: 'Tareas del proyecto: ' ,
-            allProjects
-        })
+//         res.render('ProjectTasks',{
+//             proyectoOne,
+//             nombrePagina: 'Tareas del proyecto: ' ,
+//             allProjects
+//         })
+// }
+
+exports.proyectoPorUrl = async (req, res, next) => {
+
+    const allProjects = await Proyectos.findAll();
+
+    const proyecto = await Proyectos.findOne({
+        where: {
+            url:req.params.url
+        }
+    });
+
+    // console.log(proyecto);
+
+    if(!proyecto) return next();
+
+    //render a la vista
+    res.render('tareas' , {
+        nombrePagina: 'Tareas del proyecto',
+        proyecto,
+        allProjects
+    })
 }
     // Apartado de las APIS
 

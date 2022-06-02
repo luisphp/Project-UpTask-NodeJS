@@ -48,7 +48,7 @@ app.use((req, resp, next) => {
 
 // Usando un segundo middleware sencillo
 app.use((req,res,next) => {
-    console.log('\x1b[33m%s\x1b[0m','Ejecutando segundo middleware')
+    //console.log('\x1b[33m%s\x1b[0m','Ejecutando segundo middleware')
     next()
 })
 
