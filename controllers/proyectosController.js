@@ -107,6 +107,30 @@ exports.proyectoPorUrl = async (req, res, next) => {
         allProjects
     })
 }
+
+
+exports.formularioEditar = async (req, res, next) => {
+
+    const allProjectsPromise = Proyectos.findAll();
+
+    const proyectoPromise = Proyectos.findOne({
+        where: {
+            url:req.params.id
+        }
+    });
+
+    const [allProjects, proyecto] = await  Promise.all([allProjectsPromise,proyectoPromise]);
+    
+    res.render('newProject' , {
+        nombrePagina : 'Edit Project',
+        allProjects,
+        proyecto
+    });
+
+}
+
+
+
     // Apartado de las APIS
 
     //Obtener todos los proyectos

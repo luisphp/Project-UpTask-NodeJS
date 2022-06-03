@@ -31,6 +31,13 @@ module.exports = function () {
     //Listar proyecto (PUG)
     router.get('/proyectos/:url', proyectosController.proyectoPorUrl)
 
+    // Actualizar el proyecto
+    router.get('/proyecto/editar/:id' , proyectosController.formularioEditar)
+
+    
+
+
+
         // **************** Salesforce **************** //
 
         // get Salesforce Credencial - Salesforce
