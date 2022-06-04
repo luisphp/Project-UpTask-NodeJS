@@ -15,10 +15,10 @@ const db  = require('./config/db')
 //Importar el modelo
 require('./models/Proyectos')
 
-// db.authenticate()
-/*db.sync()
+db.authenticate()
+db.sync()
     .then(() => console.log('Conectado al servidor de base de datos Xampp: localhost/phpmyadmin '))
-    .catch(error => console.log('No se puedo conectar al servidor de base de datos: ', error))*/
+    .catch(error => console.log('No se puedo conectar al servidor de base de datos: ', error))
 
 //Crear un app/servidor de express
 const app = express()

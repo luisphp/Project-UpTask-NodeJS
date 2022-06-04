@@ -67,6 +67,51 @@ exports.CreateNewProject = async (req, res) => {
     }
 }
 
+
+// Update a new Project
+exports.UpdateAProject = async (req, res) => {
+    // console.log(req.body)
+    const allProjects = await Proyectos.findAll();
+    
+    //validar que tengamos algo en el input
+    const {name} = req.body
+
+    let errores = [];
+
+    name ? '' : errores.push({'message': 'Please add a name to your Project'})
+
+    if(errores.length > 0) {
+        res.render('newProject', { nombrePagina: 'New Project' ,errores, allProjects})
+    } else {
+        // Forma sincrona
+        // Proyectos.create({name})
+        // .then(() => {
+        //     console.log(' Se inserto el proyecto correctamente')
+        // })
+        // .catch(error => {
+        //     console.log('No se pudo insertar el registro: ', error)
+        // })
+        // res.render('newProject', {nombrePagina: 'New Project', })
+
+        //****
+        // Form asincrona
+        // const url =  slug(name).toLowerCase()
+
+        //Antes de guardar en la base de datos usamos el hook de sequelize para 
+        const proyecto = await Proyectos.update(
+            {
+                name : name
+            },
+            {
+                where : {
+                    id : req.params.id
+                }
+            });
+            
+        res.redirect('/')
+    }
+}
+
 // exports.proyectoPorUrl = async(req,res) => {
 
 //     let allProjects = await Proyectos.findAll()
@@ -115,7 +160,7 @@ exports.formularioEditar = async (req, res, next) => {
 
     const proyectoPromise = Proyectos.findOne({
         where: {
-            url:req.params.id
+            id:req.params.id
         }
     });
 

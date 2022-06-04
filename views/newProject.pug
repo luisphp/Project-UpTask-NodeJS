@@ -1,15 +1,24 @@
 extends layout
 
+include mixins/crearProyecto
+
 block contenido
     .contenido-principal
         h1 #{nombrePagina}
+
+        pre=varDump(proyecto)
+
         if errores
             each error in errores
                 .alerta=error.message
-        form(action="/new-project", method="post", class="agregar-proyecto") 
-            .campo
-                label(for="nombre") Project Name: 
-                input(type="text" id="name" name="name" placeholder="Your project Name")
-            .campo.enviar 
-                input(type="submit" value="Send" class="boton")
+        +crearProyecto(proyecto)
+
+
+
+        //- form(action="/new-project", method="post", class="agregar-proyecto") 
+        //-     .campo
+        //-         label(for="nombre") Project Name: 
+        //-         input(type="text" id="name" name="name" placeholder="Your project Name")
+        //-     .campo.enviar 
+        //-         input(type="submit" value="Send" class="boton")
                 

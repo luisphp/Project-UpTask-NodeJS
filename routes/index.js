@@ -34,7 +34,21 @@ module.exports = function () {
     // Actualizar el proyecto
     router.get('/proyecto/editar/:id' , proyectosController.formularioEditar)
 
+    // Actualizar el proyecto
+    router.get('/proyecto/editar/:id' , proyectosController.formularioEditar)
+
+    //Update a project
+    router.post('/new-project/:id', body('name').not().isEmpty().trim().escape(), proyectosController.UpdateAProject)
+
     
+
+
+
+
+
+
+
+
 
 
 
