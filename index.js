@@ -12,8 +12,9 @@ const helpers = require('./helpers')
 // Crear la conexion a la base de datos
 const db  = require('./config/db')
 
-//Importar el modelo
+//Importar los modelos
 require('./models/Proyectos')
+require('./models/Tareas')
 
 db.authenticate()
 db.sync()
@@ -62,7 +63,9 @@ app.use((req,res,next) => {
 
 //habilitar body parser para tener acceso a lo que se mande como "POST" ya sea form/Http request
 app.use(bodyParser.json());
+
 require('body-parser-xml')(bodyParser);
+
 app.use(
   bodyParser.xml({
     limit: '1MB', // Reject payload bigger than 1 MB
@@ -73,8 +76,10 @@ app.use(
     },
   }),
 );
+
 app.use(bodyParser.urlencoded({extended: true}))
-app.use( '/' , routes() )
+
+app.use( '/' , routes())
 
 var port = process.env.PORT || 5000
 

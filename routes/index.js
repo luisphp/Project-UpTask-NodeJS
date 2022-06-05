@@ -6,11 +6,17 @@ const router = express.Router();
 //Importar express-validator
 const {body} = require('express-validator')
 
-//Importar controldor
+//Importar controlador de proyectos
 const proyectosController = require('../controllers/proyectosController')
+
+// Importar controlador de tareas
+const tareasController = require('../controllers/tareasController')
 
 
 module.exports = function () {
+
+    /* RUTAS para los Proyectos  */
+
     //Show index
     router.get('/',proyectosController.proyectosHome )
 
@@ -39,6 +45,14 @@ module.exports = function () {
 
     //Update a project
     router.post('/new-project/:id', body('name').not().isEmpty().trim().escape(), proyectosController.UpdateAProject)
+
+    //Eliminar proyecto
+    router.delete('/proyecto/:url' , proyectosController.eliminarProyecto)
+
+    /* RUTAS para las Tareas  */
+
+    // Guardar una nueva tarea
+    router.post('/proyecto/:url/' , tareasController.agregarTarea)
 
     
 

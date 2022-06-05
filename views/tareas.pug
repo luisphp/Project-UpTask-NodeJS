@@ -4,11 +4,33 @@ block contenido
     .contenido-principal
         h1 #{nombrePagina} - #{proyecto.name}
 
-        // TODO - Formulario Aquí
-        pre= varDump(proyecto)
+        form.agregar-tarea(action=`/proyecto/${proyecto.url}` method="POST")
+            .campo
+                label(for="tarea") Tarea: 
+                input.nombre-tarea(type="text" name="tarea" placeHolder="Nombre de la tarea...")
+            .campo.enviar
+                input.boton.nueva-tarea(type="submit" value="agregar")
+        
+        .listado-pendientes
+            ul
+              if tareas.length > 0
+                each tarea in tareas
+                    li.tarea 
+                        p=tarea.tarea
+                        .acciones
+                            if tarea.estado == 0
+                                i.far.fa-check-circle
+                            else 
+                                i.far.fa-check-circle.completo
+                            i.fas.fa-trash
+              else
+                li.tarea
+                    p Aún no cargan tareas en este proyecto
+
+
 
         // TODO - Listado de tareas pendientes por proyecto
         .contenedor-acciones 
             a(href=`/proyecto/editar/${proyecto.id}` class="boton") Editar proyecto 
-            button#eliminar-proyecto(type="button" class="boton eliminar")  Eliminarproyecto
+            button#eliminar-proyecto(data-proyecto-url=proyecto.url type="button" class="boton eliminar")  Eliminarproyecto
 

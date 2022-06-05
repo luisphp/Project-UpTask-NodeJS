@@ -1,7 +1,7 @@
 {
   "name": "proyecto-uptask-nodeexpress",
   "version": "1.0.0",
-  "description": "ProyectoUptask con NodeJS y MVC",
+  "description": "Proyecto Uptask con NodeJS-Express Pug y MVC",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

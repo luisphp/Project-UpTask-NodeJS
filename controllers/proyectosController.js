@@ -1,4 +1,5 @@
 const Proyectos = require('../models/Proyectos')
+const Tareas = require('../models/Tareas')
 const slug = require('slug');
 const { response } = require('express');
 const axios = require('axios');
@@ -133,15 +134,22 @@ exports.UpdateAProject = async (req, res) => {
 
 exports.proyectoPorUrl = async (req, res, next) => {
 
+    //Debemos traer todos los proyectos por el sidebar
     const allProjects = await Proyectos.findAll();
 
+    //Debemos traer el proyecto consultado en la URL
     const proyecto = await Proyectos.findOne({
         where: {
-            url:req.params.url
+            url : req.params.url
         }
     });
 
-    // console.log(proyecto);
+    //Debemos consultar las tareas asociadas al proyecto actual
+    const tareas = await Tareas.findAll({
+        where: {
+            proyectoId : proyecto.id
+        }
+    })
 
     if(!proyecto) return next();
 
@@ -149,7 +157,8 @@ exports.proyectoPorUrl = async (req, res, next) => {
     res.render('tareas' , {
         nombrePagina: 'Tareas del proyecto',
         proyecto,
-        allProjects
+        allProjects,
+        tareas
     })
 }
 
@@ -171,6 +180,27 @@ exports.formularioEditar = async (req, res, next) => {
         allProjects,
         proyecto
     });
+
+}
+
+// Metodo para eliminar un proyecto
+exports.eliminarProyecto = async (req,res,next)  => {
+
+    console.log('[ProyectoController-Delete] intentas eliminar: ' , req.query)
+
+    const {urlProyecto} = req.query
+
+    const resultado = await Proyectos.destroy({
+        where: {
+            url: urlProyecto
+        }
+    })
+
+    if(!resultado){
+        return next();
+    }
+
+    res.status(200).json({message : 'Proyecto Eliminado'})
 
 }
 
