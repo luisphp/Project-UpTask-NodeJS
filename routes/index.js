@@ -49,10 +49,11 @@ module.exports = function () {
     //Eliminar proyecto
     router.delete('/proyecto/:url' , proyectosController.eliminarProyecto)
 
-    /* RUTAS para las Tareas  */
+    /*********  RUTAS para las Tareas  **********/
 
     // Guardar una nueva tarea
-    router.post('/proyecto/:url/' , tareasController.agregarTarea)
+    router.post('/proyecto/:url' , tareasController.agregarTarea)
+    router.patch('/tarea/:id' , tareasController.updateTarea)
 
     
 

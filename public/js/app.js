@@ -1,1 +1,2 @@
-import tareas from './modulos/proyectos';
+import proyectos from './modulos/proyectos';
+import tareas from './modulos/tareas';

@@ -15,7 +15,7 @@ block contenido
             ul
               if tareas.length > 0
                 each tarea in tareas
-                    li.tarea 
+                    li.tarea(data-tarea=tarea.id)
                         p=tarea.tarea
                         .acciones
                             if tarea.estado == 0

@@ -32,3 +32,9 @@ exports.agregarTarea = async (req, res, next) => {
 
     res.redirect(`/proyectos/${req.params.url}`)
 }
+
+// Metodo para actualizar el estado de una tarea
+exports.updateTarea = async (req, res, next) => {
+
+    res.status(200).json({message: 'Trataste de actualizar una tarea'})
+}
