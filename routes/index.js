@@ -53,7 +53,12 @@ module.exports = function () {
 
     // Guardar una nueva tarea
     router.post('/proyecto/:url' , tareasController.agregarTarea)
+    
+    // Actualizar el estado de una tarea
     router.patch('/tarea/:id' , tareasController.updateTarea)
+
+    // Eliminar una tarea
+    router.delete('/tarea/:id' , tareasController.deleteTarea)
 
     
 

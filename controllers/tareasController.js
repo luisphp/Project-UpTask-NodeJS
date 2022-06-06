@@ -1,5 +1,5 @@
-const Proyectos = require('../models/Proyectos')
-const Tareas = require('../models/Tareas')
+const Proyectos = require('../models/Proyectos');
+const Tareas = require('../models/Tareas');
 const slug = require('slug');
 const { response } = require('express');
 const axios = require('axios');
@@ -36,5 +36,46 @@ exports.agregarTarea = async (req, res, next) => {
 // Metodo para actualizar el estado de una tarea
 exports.updateTarea = async (req, res, next) => {
 
-    res.status(200).json({message: 'Trataste de actualizar una tarea'})
+    //console.log('\x1b[36m%s\x1b[0m', 'Se recibio el estado >>> ' ,req.params);
+
+    const {id} = req.params;
+
+    const tarea = await Tareas.findOne({
+        where: {
+            id
+        }
+    });
+
+    if(!tarea) {return next();}
+
+    let estado = 0;
+
+    if(tarea.estado == 0){
+        estado = 1;
+    }
+
+    tarea.estado = estado;
+
+    const response = await tarea.save();
+
+    if(!response) {return next();}
+
+    //console.log("\x1b[41m", 'Tarea encontrada \n',tarea)
+
+    res.status(200).json({message: 'estado actualizado' , response});
+}
+
+exports.deleteTarea = async (req, res, next) => {
+
+    console.log("\x1b[43m", 'Tarea a eliminar ', req.query)
+    const {idTarea}  = req.query;
+
+    const response = await Tareas.destroy({where:{
+        id : idTarea
+    }});
+
+    if(!response) { return next();}
+
+    res.status(200).json({message: 'Borrando la tarea' , operation: response});
+
 }
