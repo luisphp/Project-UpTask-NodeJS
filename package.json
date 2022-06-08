@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "server": "node index.js",
     "webpack-watch": "webpack -w --mode development",
-    "concurrently": "concurrently \"npm run dev\" \"npm run webpack-watch\""
+    "concu": "concurrently \"npm run dev\" \"npm run webpack-watch\""
   },
   "author": "Luis Hurtado",
   "license": "ISC",

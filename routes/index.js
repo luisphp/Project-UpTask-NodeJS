@@ -60,6 +60,8 @@ module.exports = function () {
     // Eliminar una tarea
     router.delete('/tarea/:id' , tareasController.deleteTarea)
 
+    router.get('/crear-cuenta' , userContraoller.creatCuenta)
+
     
 
 
