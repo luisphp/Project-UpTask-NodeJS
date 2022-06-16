@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.25.0",
+    "bcrypt-nodejs": "^0.0.3",
     "body-parser-xml": "^2.0.3",
     "concurrently": "^7.2.1",
     "express": "^4.17.1",

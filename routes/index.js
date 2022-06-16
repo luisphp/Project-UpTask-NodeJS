@@ -12,6 +12,9 @@ const proyectosController = require('../controllers/proyectosController')
 // Importar controlador de tareas
 const tareasController = require('../controllers/tareasController')
 
+// Importar controlador de usuarios
+const usuarioController = require('../controllers/usuarioController')
+
 
 module.exports = function () {
 
@@ -60,7 +63,13 @@ module.exports = function () {
     // Eliminar una tarea
     router.delete('/tarea/:id' , tareasController.deleteTarea)
 
-    router.get('/crear-cuenta' , userContraoller.creatCuenta)
+    /*********  RUTAS para los usuarios  **********/
+
+    // Formulario para Crear cuenta
+    router.get('/crear-cuenta' , usuarioController.formularioCrearCuenta)
+
+    // Crear cuenta
+    router.post('/crear-cuenta' , usuarioController.crearCuenta)
 
     
 
